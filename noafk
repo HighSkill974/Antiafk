@@ -1,6 +1,6 @@
 -- Simple Loader by HighSkill974
 
-local lootlabsLink = "https://lootdest.org/s?F9pUL2TF" -- Remplace par ton lien LootLabs ici
+local lootlabsLink = "https://lootdest.org/s?fwExPuAB" -- Remplace par ton lien LootLabs ici
 
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
