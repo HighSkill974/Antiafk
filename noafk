@@ -1,0 +1,64 @@
+--// UI Library (simple fait maison)
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local ToggleButton = Instance.new("TextButton")
+local Dragging = false
+local AntiAFKEnabled = false
+
+--// Parent
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.Name = "AntiAFK_GUI"
+
+--// Main Frame
+MainFrame.Size = UDim2.new(0, 250, 0, 100)
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -50)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.Draggable = true
+MainFrame.Active = true
+MainFrame.Parent = ScreenGui
+
+--// Title
+Title.Text = "Anti-AFK Script"
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 20
+Title.Parent = MainFrame
+
+--// Toggle Button
+ToggleButton.Size = UDim2.new(0.8, 0, 0, 40)
+ToggleButton.Position = UDim2.new(0.1, 0, 0.5, -20)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+ToggleButton.Text = "Enable Anti-AFK"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.Font = Enum.Font.SourceSans
+ToggleButton.TextSize = 18
+ToggleButton.Parent = MainFrame
+
+--// Anti-AFK function
+local connection
+local function toggleAntiAFK()
+	if AntiAFKEnabled then
+		if connection then connection:Disconnect() end
+		ToggleButton.Text = "Enable Anti-AFK"
+		AntiAFKEnabled = false
+	else
+		connection = game:GetService("Players").LocalPlayer.Idled:Connect(function()
+			local VirtualUser = game:GetService("VirtualUser")
+			VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+			wait(1)
+			VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+		end)
+		ToggleButton.Text = "Disable Anti-AFK"
+		AntiAFKEnabled = true
+	end
+end
+
+--// Connect Button
+ToggleButton.MouseButton1Click:Connect(toggleAntiAFK)
+
+-- Optional: Auto-enable on load
+-- toggleAntiAFK()
