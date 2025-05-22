@@ -1,48 +1,72 @@
-local a=Instance.new("ScreenGui")
-local b=Instance.new("Frame")
-local c=Instance.new("TextLabel")
-local d=Instance.new("TextButton")
-local e=false
-local f=false
-a.Parent=game:GetService("CoreGui")
-a.Name="AntiAFK_GUI"
-b.Size=UDim2.new(0,250,0,100)
-b.Position=UDim2.new(0.5,-125,0.5,-50)
-b.BackgroundColor3=Color3.fromRGB(30,30,30)
-b.BorderSizePixel=0
-b.Draggable=true
-b.Active=true
-b.Parent=a
-c.Text="Anti-AFK Script"
-c.Size=UDim2.new(1,0,0,30)
-c.BackgroundTransparency=1
-c.TextColor3=Color3.fromRGB(255,255,255)
-c.Font=Enum.Font.SourceSansBold
-c.TextSize=20
-c.Parent=b
-d.Size=UDim2.new(0.8,0,0,40)
-d.Position=UDim2.new(0.1,0,0.5,-20)
-d.BackgroundColor3=Color3.fromRGB(70,130,180)
-d.Text="Enable Anti-AFK"
-d.TextColor3=Color3.fromRGB(255,255,255)
-d.Font=Enum.Font.SourceSans
-d.TextSize=18
-d.Parent=b
-local g
-local function h()
-	if f then
-		if g then g:Disconnect() end
-		d.Text="Enable Anti-AFK"
-		f=false
-	else
-		g=game:GetService("Players").LocalPlayer.Idled:Connect(function()
-			local i=game:GetService("VirtualUser")
-			i:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-			wait(1)
-			i:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-		end)
-		d.Text="Disable Anti-AFK"
-		f=true
-	end
-end
-d.MouseButton1Click:Connect(h)
+-- Simple Loader by HighSkill974
+
+local lootlabsLink = "https://lootdest.org/s?F9pUL2TF" -- Remplace par ton lien LootLabs ici
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Création UI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "LoaderGui"
+ScreenGui.Parent = playerGui
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 300, 0, 150)
+Frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BorderSizePixel = 0
+Frame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 8)
+UICorner.Parent = Frame
+
+local Title = Instance.new("TextLabel")
+Title.Text = "Script Unlock Required"
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 22
+Title.Parent = Frame
+
+local Info = Instance.new("TextLabel")
+Info.Text = "Click 'Get Key' to copy the unlock link."
+Info.Size = UDim2.new(1, -20, 0, 40)
+Info.Position = UDim2.new(0, 10, 0, 50)
+Info.BackgroundTransparency = 1
+Info.TextColor3 = Color3.fromRGB(200, 200, 200)
+Info.Font = Enum.Font.Gotham
+Info.TextSize = 16
+Info.TextWrapped = true
+Info.Parent = Frame
+
+local Button = Instance.new("TextButton")
+Button.Text = "Get Key"
+Button.Size = UDim2.new(0.5, -15, 0, 40)
+Button.Position = UDim2.new(0.25, 0, 1, -50)
+Button.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+Button.TextColor3 = Color3.new(1, 1, 1)
+Button.Font = Enum.Font.GothamBold
+Button.TextSize = 18
+Button.Parent = Frame
+
+local UICorner2 = Instance.new("UICorner")
+UICorner2.CornerRadius = UDim.new(0, 6)
+UICorner2.Parent = Button
+
+-- Fonction bouton
+Button.MouseButton1Click:Connect(function()
+    setclipboard(lootlabsLink)
+    StarterGui:SetCore("SendNotification", {
+        Title = "Unlock Link Copied",
+        Text = "Paste it in your browser to unlock the script.",
+        Duration = 6,
+    })
+    
+    wait(5)
+    player:Kick("Please unlock the script by visiting the copied link.")
+end)
